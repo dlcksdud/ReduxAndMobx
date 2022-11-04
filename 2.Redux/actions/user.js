@@ -1,10 +1,11 @@
 // acync action creater
 const logIn = (data) => {
+    console.log("여기는 와야지");
     // 얘는 비동기니까 함수 리턴
     return (dispatch, getState) => { // acync action
         // 로그인 시도
         dispatch(logInRequest(data));
-        console.log("logInRequest");
+        
         try {
             // 현재는 서버가 없으니, 로그인 되는 시간 2초로 지정
             setTimeout(() => {
@@ -12,7 +13,7 @@ const logIn = (data) => {
                     userId: 1,
                     nickName: 'chanyeong'
                 }));
-                console.log("logInSuccess");
+                
             }, 2000);
 
         } catch (e) {
@@ -65,5 +66,5 @@ const logOut = () => {
 }
 
 module.exports = {
-    logIn, logOut
+    logIn, logOut, logInRequest, logInSuccess, logInFailure
 }

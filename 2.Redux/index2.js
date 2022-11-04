@@ -1,5 +1,5 @@
 const { createStore, compose, applyMiddleware } = require('redux');
-const reducer = require('./reducers/index');
+const reducer = require('../3.Redux/reducers/index');
 const { logIn, logOut } = require('./actions/user');
 const { addPost } = require('./actions/post');
 
@@ -58,7 +58,9 @@ const initialState = {
  * * applyMiddleware
  *  - 3단 함수가 들어감.
  *  - 3단 함수 : 실행되는 시점마다 다르게 적용하고 싶을 때.
- *  - 사이사이 다르게 적용되는 거 필요없으면 한줄로 써주면 됨
+ *  - 사이사이 다르게 적용되는 거 필요없으면 한줄로 써주면 됨]
+ * 
+ *  dispatch 대신 next 쓰기도 함.
  */
 const firstMiddleware = (store) => (dispatch) => (action) => {
     console.log('액션 로깅', action);
@@ -71,6 +73,7 @@ const firstMiddleware = (store) => (dispatch) => (action) => {
 // redux-thunk : 비동기를 제어하는 가장 유명한 미들웨어
 const thunkMiddleware = (store) => (dispatch) => (action) => {
     // 비동기
+    console.log(typeof action);
     if(typeof action === 'function') {
         // 비동기인 경우에는 action을 객체가 아니라, 함수로 넣어주겠다.
         return action(store.dispatch, store.getState);
@@ -89,9 +92,9 @@ const enhancer = applyMiddleware(
 const store = createStore(reducer, initialState, enhancer);
 
 //  이벤트 리스너
-store.subscribe(() => { // react-redux안에 들어있어요.
-    console.log('changed'); // 화면 바꿔주는 코드는 여기서
-})
+// store.subscribe(() => { // react-redux안에 들어있어요.
+//     console.log('changed'); // 화면 바꿔주는 코드는 여기서
+// })
 
 console.log('1st', store.getState());
 
