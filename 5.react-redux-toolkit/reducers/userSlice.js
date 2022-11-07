@@ -4,6 +4,7 @@ const { logIn } = require('../actions/user');
 // initialState.user의 기본값 설정
 const initialState = {
     isLoggingIn: false,
+    isLoggedIn: false,
     data: null,
     email: '',
     password: ''
@@ -52,28 +53,32 @@ const userSlice = createSlice({
             state.password = action.payload;
         }
     },
-    extraReducers: {
-        // 비동기적, 외부적
-
-        // 로딩
-        // 액션이름이 user/login 이니까 // user/login/pending이 되는거임.
-        // [login.pending] 변수 안에 -> user/login/pending이 들어있는 것.
-        // tookit이 변수명까지 만들어준 것.
-        [logIn.pending](state, action) {
+    extraReducers: (builder) => builder
+        .addCase(logIn.pending, (state, action) => {
+            state.data = null;
             state.isLoggingIn = true;
-        },
-        // 성공
-        // user/login/fullfilled
-        [logIn.fullfilled](state, action) {
+            state.isLoggedIn = false;
+            state.error = false;
+        })
+        .addCase(logIn.fulfilled, (state, action) => {
             state.data = action.payload;
-            draft.isLoggingIn = false;
-        },
-        // 실패
-        // user/login/rejected
-        [logIn.rejected](state, action) {
+            state.isLoggingIn = false;
+            state.isLoggedIn = true;
+        })
+        .addCase(addPost.rejected, (state, action) => {
 
-        }
-    }
+        })
+
+        // 여러 action 간의 공통인거 처리 할떄.
+        .addMatcher((action) => {
+            return action.type.includes('/pending');
+        }, (state, action) => {
+            state.isLoading = true;
+        })
+        
+        .addDefaultCase((state, action) => {
+            // default 일 때, 어떻게 할지.
+        })
 })
 
 module.exports = userSlice;
