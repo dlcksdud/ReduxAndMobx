@@ -4,7 +4,7 @@ const { logIn } = require('../actions/user');
 // initialState.user의 기본값 설정
 const initialState = {
     isLoggingIn: false,
-    isLoggedIn: false,
+    // isLoggedIn: false,
     data: null,
     email: '',
     password: ''

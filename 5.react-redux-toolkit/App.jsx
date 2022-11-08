@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {createSelector} from '@reduxjs/toolkit'; // reselect
 
 import { logIn } from './actions/user';
 const userSlice = require('./reducers/userSlice');
@@ -11,8 +12,10 @@ const App = () => {
     const user = useSelector((state) => state.user);
 
     // const { email, password } = useSelector((state) => state.user);
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    // const [email, setEmail] = useState();
+    // const [password, setPassword] = useState();
+    const email = useSelector((state) => state.user.email);
+    const password = useSelector((state) => state.user.password);
 
     const {list} = useSelector((state) => state.post);
     const dispatch = useDispatch();
@@ -37,7 +40,7 @@ const App = () => {
             ...prev,
             [id]: { type: 'LOGIN_LOADING' }
         }))
-        
+
         // 컴포넌트 형
         setLoadingIds((prev) => prev.concat(id));
 
